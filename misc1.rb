@@ -8,9 +8,9 @@ class UniqloShopper::CLI
   
   def list_shirts
     puts "Today's T-Shirts:"
-    UniqloShopper::Scraper.scrape_shirts
-    UniqloShopper::Shirt.all.each_with_index do |shirt, i|
-      puts "#{i}. #{shirt.name}"
+    @shirts = UniqloShopper::Shirt.today
+    @shirts.each.with_index(1) do |shirt, i|
+      puts "#{i}. #{shirt[:name]}"
     end
   end
   
@@ -21,9 +21,9 @@ class UniqloShopper::CLI
       input = gets.strip.downcase
       
       if input.to_i > 0
-        the_shirt = UniqloShopper::Shirt.all[input.to_i-1]
+        the_shirt = @shirts[input.to_i-1]
         if the_shirt
-          puts "#{the_shirt.name} - #{the_shirt.price} - #{the_shirt.url}
+          puts "#{the_shirt[:name]} - #{the_shirt[:price]} - #{the_shirt[:url]}
           "
         else
           puts "Error, please try again"
